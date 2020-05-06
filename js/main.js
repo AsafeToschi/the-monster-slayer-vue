@@ -1,4 +1,4 @@
-new Vue({
+teste = new Vue({
     el: '#app',
     data: {
         hero: {
@@ -6,11 +6,20 @@ new Vue({
             status: {
 
                 level: 1,
-                maxHealth: 100,
-                health: 100,
-                maxMana: 50,
-                mana: 50,
+                maxHealth: 500,
+                health: 500,
+                maxMana: 150,
+                mana: 150,
+                baseSpeed: 1,
                 speed: 1,
+                minDamage: 70,
+                maxDamage: 100
+                
+            },
+            abilities: {
+
+                heal: 25,
+                healCost: 75
 
             },
             enemyTarget: "monster"
@@ -21,75 +30,51 @@ new Vue({
             status: {
 
                 level: 1,
-                maxHealth: 75,
-                health: 75,
-                maxMana: 30,
-                mana: 30,
+                maxHealth: 450,
+                health: 450,
+                maxMana: 175,
+                mana: 175,
+                baseSpeed: 0.75,
                 speed: 0.75,
+                minDamage: 80,
+                maxDamage: 110
+
+            },
+            abilities: {
+
+                heal: 30,
+                healCost: 75
 
             },
             enemyTarget: "hero"
 
         },
-        turn: "hero",
-        nextTurns: [],
+        activeTurn: "hero",
+        battleLog: [],
+        hasBattleLog: false,
 
     },
     computed: {
 
     },
     methods: {
-        endBattle: function (dead) {
+        nextTurn: function (activeTurn) {
 
-            if (dead == 'hero') {
-                $('#lose').modal({
-                    show: true,
-                    backdrop: 'static'
-                })
-            } else if (dead == 'monster') {
-                $('#win').modal({
-                    show: true,
-                    backdrop: 'static'
-                })
+            if (activeTurn == 'hero') {
+                this.activeTurn = 'monster'
+                setTimeout(() => {
+                    this.monsterAction()
+                }, 700)
+
+            } else if (activeTurn == 'monster') {
+                setTimeout(() => {
+                    this.activeTurn = 'hero'
+                }, 800)
+
             }
 
         },
 
-
-        restartGame: function () {        
-            this.hero.status.health = this.hero.status.maxHealth
-            this.hero.status.mana = this.hero.status.maxMana
-
-            this.monster.status.health = this.monster.status.maxHealth
-            this.monster.status.mana = this.monster.status.maxMana
-        },
-
-
-        // turns: function () {
-        //     heroSpeed = 0
-        //     monsterSpeed = 0
-        //     for (let i = 0; this.nextTurns.length < 30; i++) {
-        //     // for (let i = 0; i < 10; i++) {
-
-
-        //         if (heroSpeed > monsterSpeed && heroSpeed >= 1) {
-        //             this.nextTurns.push("hero")
-        //             heroSpeed--
-
-        //         }
-        //         if (monsterSpeed > heroSpeed && monsterSpeed >= 1) {
-        //             this.nextTurns.push("monster")
-        //             monsterSpeed--
-
-        //         }
-        //         console.log("Hero speed: " + heroSpeed)
-        //         console.log("Monster speed: " + monsterSpeed)
-        //         heroSpeed += this.hero.status.speed
-        //         monsterSpeed += this.monster.status.speed
-
-        //     }
-        //     return console.log(this.nextTurns)
-        // },
 
         healthBar: function (character) {
 
@@ -137,41 +122,125 @@ new Vue({
 
         },
 
-        monsterAction: function () {
-
-            // action = Math.round(Math.random() * (2 - 1)) + 1
-            action = 1
-
-            if (action == 1) {
-                this.attack('monster')
-            }
-
-        },
-
 
         attack: function (character) {
+            if (this.activeTurn == character && this[character].status.health > 0) {
 
-            enemyTarget = this[character].enemyTarget
-            this[enemyTarget].status.health -= 30
+                enemyTarget = this[character].enemyTarget
 
-            $("#" + enemyTarget).effect("shake", {
-                distance: 5
-            })
+                minDamage = this[character].status.minDamage
+                maxDamage = this[character].status.maxDamage
+                damage = Math.round(Math.random() * (maxDamage - minDamage)) + minDamage
+
+                this[enemyTarget].status.health -= damage
+                $("#" + enemyTarget).effect("shake", {
+                    distance: 5
+                })
+
+                this.battleLog.unshift({
+                    character,
+                    text: "The " + character + " deals " + damage + " DMG to the " + enemyTarget
+                })
+                this.hasBattleLog = true
+
+                this.nextTurn(character)
+            }
+        },
+
+
+        heal: function (character, manaCost) {
+            if (this.activeTurn == character) {
+
+                healPercent = this[character].abilities.heal
+                manaCost = this[character].abilities.healCost
+
+                if (this[character].status.mana >= manaCost) {
+
+                    this[character].status.mana -= manaCost
+                    heal = this[character].status.maxHealth * (healPercent / 100)
+                    this[character].status.health += heal
+
+
+                    this.battleLog.unshift({
+                        character,
+                        text: "The " + character + " heals itself by " + heal + " HP"
+                    })
+                    this.hasBattleLog = true
+
+                    this.nextTurn(character)
+
+                }
+            }
 
         },
 
 
-        heal: function (character, cost) {
+        monsterAction: function () {
 
-            if (this[character].status.mana >= cost) {
+            health = this.monster.status.health
+            maxEnemyDamage = this.hero.status.maxDamage
 
-                this[character].status.mana -= cost
-                heal = this[character].status.maxHealth * (30 / 100)
+            mana = this.monster.status.mana
+            healCost = this.monster.abilities.healCost
 
-                this[character].status.health += heal
+            if (health <= maxEnemyDamage && mana >= healCost) {
+                maxDamage = this.monster.status.maxDamage
+                enemyHealth = this.hero.status.health
+                if (enemyHealth <= maxDamage) {
+                    action = 'attack'
 
+                } else {
+                    action = 'heal'
+
+                }
+
+            } else {
+                action = 'attack'
             }
 
-        }
+            if (action == 'attack') {
+                this.attack('monster')
+            }
+            if (action == 'heal') {
+                this.heal('monster')
+            }
+        },
+
+
+        endBattle: function (dead) {
+
+            setTimeout(() => {
+
+                if (dead == 'hero') {
+                    $('#lose').modal({
+                        show: true,
+                        backdrop: 'static'
+                    })
+                } else if (dead == 'monster') {
+                    $('#win').modal({
+                        show: true,
+                        backdrop: 'static'
+                    })
+                }
+
+            }, 500)
+
+        },
+
+
+        restartGame: function () {
+            setTimeout(() => {
+                this.activeTurn = 'hero'
+                this.battleLog = []
+                this.hasBattleLog = false
+
+                this.hero.status.health = this.hero.status.maxHealth
+                this.hero.status.mana = this.hero.status.maxMana
+
+                this.monster.status.health = this.monster.status.maxHealth
+                this.monster.status.mana = this.monster.status.maxMana
+
+            }, 500)
+        },
     },
 })

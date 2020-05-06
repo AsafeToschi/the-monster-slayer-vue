@@ -1,0 +1,7 @@
+// Efeitos 
+
+Fear - o alvo não ataca mas tem mais chance de desviar do ataque adversário enquanto está sobre esse efeito
+poison - da dano ao longo de 5 turnos(aproximadamente) - dano por turno: dano do crítico dividido durante os turnos 
+burn - da dano ao longo de 3 turnos(aproximadamente) - dano por turno: dano do crítico dividido durante os turnos
+critico - da 150% de dano - chance de crítico: 1%
+proteção - reduz o dano recebido 50% por 2 turnos

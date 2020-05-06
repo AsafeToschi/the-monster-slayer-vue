@@ -87,8 +87,34 @@ html body #app .status .mana-bar span {
   top: 50%;
   transform: translate(-50%, -50%);
 }
+html body #app .action-buttons button.disabled {
+  cursor: not-allowed;
+}
 html body #app .action-buttons button small {
   font-size: 11px;
+}
+html body #app .battle-info {
+  background: #fafafa;
+  box-shadow: 1px 2px 6px #00000022, 0px 0px 6px #00000022;
+  padding: 15px;
+  list-style: none;
+}
+html body #app .battle-info li {
+  padding: 5px;
+  margin: 5px 0px;
+}
+html body #app .battle-info li.hero-log {
+  background: rgba(105, 187, 57, 0.2);
+  color: #167315;
+  font-weight: 500;
+}
+html body #app .battle-info li.monster-log {
+  background: rgba(228, 56, 64, 0.2);
+  color: #8a1117;
+  font-weight: 500;
+}
+html body #app .battle-info li:last-child {
+  border-bottom: none;
 }
 
 /*# sourceMappingURL=style.css.map */

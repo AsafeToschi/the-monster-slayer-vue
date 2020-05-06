@@ -73,18 +73,28 @@
                         <button type="button" class="btn btn-danger" @click="attack('hero')">
                             Attack
                         </button>
-                        <button type="button" class="btn btn-warning" @click="monsterAction()">
+                        <button type="button" class="btn btn-warning disabled" @click="">
                             Spacial Attack
                             <small class="d-block">Mana cost: 25</small>
                         </button>
-                        <button type="button" class="btn btn-success" @click="heal('hero', 25)">
-                            Heal ({{ hero.status.maxHealth * (30 / 100) }} HP)
-                            <small class="d-block">Mana cost: 25</small>
+                        <button type="button" class="btn btn-success" @click="heal('hero', 75)">
+                            Heal ({{ hero.status.maxHealth * ( hero.abilities.heal / 100) }} HP)
+                            <small class="d-block">Mana cost: {{ hero.abilities.healCost }}</small>
                         </button>
-                        <button type="button" class="btn btn-white">
+                        <button type="button" class="btn btn-white disabled">
                             Run!
                         </button>
                     </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 mt-5">
+                    <ul class="battle-info" v-show="hasBattleLog">
+                        <template v-for="log in battleLog">
+                            <li class="text-center" :class="[{'hero-log': log.character == 'hero'}, {'monster-log': log.character == 'monster'}]"> {{ log.text }} </li>
+                        </template>
+                    </ul>
                 </div>
             </div>
             
@@ -95,9 +105,7 @@
                         <h1 class="text-success text-center p-5">
                             You win!
                         </h1>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal" @click="restartGame">Restart Game</button>
-                        </div>
+                        <button type="button" class="btn btn-primary mx-auto mb-5" data-dismiss="modal" @click="restartGame">Restart Game</button>
                     </div>
                 </div>
             </div>
@@ -109,9 +117,7 @@
                         <h1 class="text-danger text-center p-5">
                             You lose!
                         </h1>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal" @click="restartGame">Restart Game</button>
-                        </div>
+                        <button type="button" class="btn btn-primary mx-auto mb-5" data-dismiss="modal" @click="restartGame">Restart Game</button>
                     </div>
                 </div>
             </div>
