@@ -1,0 +1,102 @@
+html{
+    height: 100%;
+    width: 100%;
+    body{
+        height: 100%;
+        width: 100%;
+        // background-image: linear-gradient(45deg, #2d84d0,#30cff3);
+        #app{
+            color: #444;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            position: relative;
+            .turns{
+                padding: 10px;
+                background: #f2f2f2;
+                overflow: hidden;
+                display: flex;
+                ul{
+                    
+                    list-style-type: none;
+                    overflow: hidden;
+                    display: flex;
+                    margin: 0px;
+                    padding: 0px;
+                    li{
+                        padding: 0 7.5px;
+                        display: inline;
+                    }
+                }
+            }
+            .status{
+                &#hero{
+                    .health-bar{
+                        background: rgba(#69bb39, 0.3);
+                        border: 2px solid rgba( #69bb39, 0.4);
+                        .health{
+                            background: #69bb39;
+                        }
+                        span{
+                            color: #167315;
+                        }
+                    }
+                }
+                .health-bar{
+                    position: relative;
+                    width: 100%;
+                    height: 30px;
+                    background: rgba( #e43840, 0.3);
+                    border: 2px solid rgba( #e43840, 0.4);
+                    .health{
+                        height: 100%;
+                        background: #e43840;
+                        font-weight: 500;
+                        transition: 0.3s ease;
+                    }
+                    span{
+                        position: absolute;
+                        display: block;
+                        color: #8a1117;
+                        font-weight: 500;
+                        font-size: 20px;
+                        left: 50%;
+                        top: 50%;
+                        transform: translate(-50%, -50%);
+                    }
+                }
+                .mana-bar{
+                    position: relative;
+                    width: 100%;
+                    height: 20px;
+                    background: rgba( #479af3, 0.3);
+                    border: 1px solid rgba( #479af3, 0.4);
+                    margin-top: 5px;
+                    .mana{
+                        height: 100%;
+                        background: #479af3;
+                        font-weight: 500;
+                        transition: 0.3s ease;
+                    }
+                    span{
+                        position: absolute;
+                        display: block;
+                        color: #064b96;
+                        font-weight: 500;
+                        font-size: 12px;
+                        left: 50%;
+                        top: 50%;
+                        transform: translate(-50%, -50%);
+                    }
+                }
+            }
+            .action-buttons{
+                button{
+                    small{
+                        font-size: 11px;
+                    }
+                }
+            }
+        }
+    }
+}

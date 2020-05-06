@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Monster Slayer</title>
+    
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="row mt-5">
+                <div class="col-md-12 text-center"> 
+                    <h1>
+                        The Monster Slayer
+                    </h1>
+                </div>
+            </div>
+            <!-- <div class="row">
+                <div class="col-md-12">
+                    <div class="turns">
+                        <ul>
+                            <template v-for="n in 15">
+                                <li>
+                                    <span class="badge badge-primary">Hero</span>
+                                </li>
+                                <li>
+                                    <span class="badge badge-danger">Monster</span>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                </div>
+            </div> -->
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="text-center">Hero</h3>
+
+                    <div class="status mt-4" id="hero">
+                        <div class="health-bar">
+                            <div class="health" :style="healthBar('hero')"></div>
+                            <span> {{ hero.status.health }} / {{ hero.status.maxHealth }} </span>
+                        </div>
+
+                        <div class="mana-bar">
+                            <div class="mana" :style="manaBar('hero')"></div>
+                            <span> {{ hero.status.mana }} / {{ hero.status.maxMana }} </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h3 class="text-center">Monster</h3>
+
+                    <div class="status mt-4" id="monster">
+                        <div class="health-bar">
+                            <div class="health" :style="healthBar('monster')"></div>
+                            <span> {{ monster.status.health }} / {{ monster.status.maxHealth }} </span>
+                        </div>
+
+                        <div class="mana-bar">
+                            <div class="mana" :style="manaBar('monster')"></div>
+                            <span> {{ monster.status.mana }} / {{ monster.status.maxMana }} </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 pt-5">
+                    <div class="btn-group d-flex justify-content-center action-buttons" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-danger" @click="attack('hero')">
+                            Attack
+                        </button>
+                        <button type="button" class="btn btn-warning" @click="monsterAction()">
+                            Spacial Attack
+                            <small class="d-block">Mana cost: 25</small>
+                        </button>
+                        <button type="button" class="btn btn-success" @click="heal('hero', 25)">
+                            Heal ({{ hero.status.maxHealth * (30 / 100) }} HP)
+                            <small class="d-block">Mana cost: 25</small>
+                        </button>
+                        <button type="button" class="btn btn-white">
+                            Run!
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- WIN -->
+            <div class="modal fade" id="win" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content bg-white">                        
+                        <h1 class="text-success text-center p-5">
+                            You win!
+                        </h1>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" @click="restartGame">Restart Game</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOSE -->
+            <div class="modal fade" id="lose" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content bg-white">                        
+                        <h1 class="text-danger text-center p-5">
+                            You lose!
+                        </h1>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" @click="restartGame">Restart Game</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="js/jquery.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/vue.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

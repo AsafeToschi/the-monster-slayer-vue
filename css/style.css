@@ -1,0 +1,94 @@
+html {
+  height: 100%;
+  width: 100%;
+}
+html body {
+  height: 100%;
+  width: 100%;
+}
+html body #app {
+  color: #444;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  position: relative;
+}
+html body #app .turns {
+  padding: 10px;
+  background: #f2f2f2;
+  overflow: hidden;
+  display: flex;
+}
+html body #app .turns ul {
+  list-style-type: none;
+  overflow: hidden;
+  display: flex;
+  margin: 0px;
+  padding: 0px;
+}
+html body #app .turns ul li {
+  padding: 0 7.5px;
+  display: inline;
+}
+html body #app .status#hero .health-bar {
+  background: rgba(105, 187, 57, 0.3);
+  border: 2px solid rgba(105, 187, 57, 0.4);
+}
+html body #app .status#hero .health-bar .health {
+  background: #69bb39;
+}
+html body #app .status#hero .health-bar span {
+  color: #167315;
+}
+html body #app .status .health-bar {
+  position: relative;
+  width: 100%;
+  height: 30px;
+  background: rgba(228, 56, 64, 0.3);
+  border: 2px solid rgba(228, 56, 64, 0.4);
+}
+html body #app .status .health-bar .health {
+  height: 100%;
+  background: #e43840;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+html body #app .status .health-bar span {
+  position: absolute;
+  display: block;
+  color: #8a1117;
+  font-weight: 500;
+  font-size: 20px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+html body #app .status .mana-bar {
+  position: relative;
+  width: 100%;
+  height: 20px;
+  background: rgba(71, 154, 243, 0.3);
+  border: 1px solid rgba(71, 154, 243, 0.4);
+  margin-top: 5px;
+}
+html body #app .status .mana-bar .mana {
+  height: 100%;
+  background: #479af3;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+html body #app .status .mana-bar span {
+  position: absolute;
+  display: block;
+  color: #064b96;
+  font-weight: 500;
+  font-size: 12px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+html body #app .action-buttons button small {
+  font-size: 11px;
+}
+
+/*# sourceMappingURL=style.css.map */
