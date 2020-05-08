@@ -6,7 +6,7 @@
     <title>The Monster Slayer</title>
     
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css"> <!-- Download just the Effects -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -14,7 +14,7 @@
         <div class="container">
             <div class="row mt-5">
                 <div class="col-md-12 text-center"> 
-                    <h1>
+                    <h1 class="title-game">
                         The Monster Slayer
                     </h1>
                 </div>
@@ -37,9 +37,11 @@
             </div> -->
             <div class="row">
                 <div class="col-md-6">
-                    <h3 class="text-center">Hero</h3>
-
+                    
                     <div class="status mt-4" id="hero">
+                        <div class="name-character text-center">
+                            <h3>Hero Lvl. {{ hero.status.level }}</h3>
+                        </div>
                         <div class="health-bar">
                             <div class="health" :style="healthBar('hero')"></div>
                             <span> {{ hero.status.health }} / {{ hero.status.maxHealth }} </span>
@@ -49,12 +51,30 @@
                             <div class="mana" :style="manaBar('hero')"></div>
                             <span> {{ hero.status.mana }} / {{ hero.status.maxMana }} </span>
                         </div>
+                        <div class="status-HUD" v-model="setStatusHUD('hero')">
+                            <ul class="list-status">
+                                <template v-for="(statusInfo, statusName) in hero.statusHUD.line1">
+                                    <li class="item-status" data-toggle="tooltip" data-placement="bottom" v-bind:title="hero.statusDescriptionHUD[statusName]">
+                                        <img :src="'images/icons/' + statusName + '.svg'"> {{ statusInfo }}
+                                    </li>
+                                </template>
+                            </ul>
+                            <ul class="list-status">
+                                <template v-for="(statusInfo, statusName) in hero.statusHUD.line2">
+                                    <li class="item-status" data-toggle="tooltip" data-placement="bottom" v-bind:title="hero.statusDescriptionHUD[statusName]">
+                                        <img :src="'images/icons/' + statusName + '.svg'"> {{ statusInfo }}
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <h3 class="text-center">Monster</h3>
-
                     <div class="status mt-4" id="monster">
+                        <div class="name-character text-center">
+                            <h3>Monster Lvl. {{ monster.status.level }}</h3>
+                        </div>
+
                         <div class="health-bar">
                             <div class="health" :style="healthBar('monster')"></div>
                             <span> {{ monster.status.health }} / {{ monster.status.maxHealth }} </span>
@@ -63,6 +83,22 @@
                         <div class="mana-bar">
                             <div class="mana" :style="manaBar('monster')"></div>
                             <span> {{ monster.status.mana }} / {{ monster.status.maxMana }} </span>
+                        </div>
+                        <div class="status-HUD" v-model="setStatusHUD('monster')">
+                            <ul class="list-status">
+                                <template v-for="(statusInfo, statusName) in monster.statusHUD.line1">
+                                    <li class="item-status" data-toggle="tooltip" data-placement="bottom" v-bind:title="monster.statusDescriptionHUD[statusName]">
+                                        <img :src="'images/icons/' + statusName + '.svg'"> {{ statusInfo }}
+                                    </li>
+                                </template>
+                            </ul>
+                            <ul class="list-status">
+                                <template v-for="(statusInfo, statusName) in monster.statusHUD.line2">
+                                    <li class="item-status" data-toggle="tooltip" data-placement="bottom" v-bind:title="monster.statusDescriptionHUD[statusName]">
+                                        <img :src="'images/icons/' + statusName + '.svg'"> {{ statusInfo }}
+                                    </li>
+                                </template>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -74,7 +110,7 @@
                             Attack
                         </button>
                         <button type="button" class="btn btn-warning disabled" @click="">
-                            Spacial Attack
+                            Special Attack
                             <small class="d-block">Mana cost: 25</small>
                         </button>
                         <button type="button" class="btn btn-success" @click="heal('hero', 75)">
