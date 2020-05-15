@@ -1,8 +1,9 @@
 var gameApp = new Vue({
     el: '#app',
     data: {
+        battle: true,
+        map: false,
         hero: {
-
             status: {
 
                 level: 1,
@@ -14,11 +15,12 @@ var gameApp = new Vue({
                 baseSpeed: 10,
                 speed: 10,
                 dodge: 0,
-                minDamage: 15,
-                maxDamage: 25,
-                critical: 10, // % chance
+                minDamage: 25,
+                maxDamage: 40,
+                critical: 5, // % chance
                 criticalDamage: 150, // %
-                defence: 10
+                defence: 10,
+                damageReduction: 0, // atribuído dinamicamente
 
             },
             statusHUD: {
@@ -36,7 +38,7 @@ var gameApp = new Vue({
                     defence: 0,
                     critical: "0%",
                     dodge: 0,
-                    
+
                 }
             },
             statusDescriptionHUD: {
@@ -51,16 +53,19 @@ var gameApp = new Vue({
 
             },
             abilities: {
+                heal: {
 
-                heal: 30,
-                healCost: 20
+                    percentRegen: 30,
+                    healthRegen: 0,
+                    healCost: 20,
+
+                },
 
             },
             enemyTarget: "monster"
 
         },
         monster: {
-
             status: {
 
                 level: 1,
@@ -72,11 +77,12 @@ var gameApp = new Vue({
                 baseSpeed: 10,
                 speed: 10,
                 dodge: 0,
-                minDamage: 10,
-                maxDamage: 20,
-                critical: 10, // % chance
+                minDamage: 25,
+                maxDamage: 40,
+                critical: 5, // % chance
                 criticalDamage: 150, // %
-                defence: 10
+                defence: 10,
+                damageReduction: 0, // atribuído dinamicamente
 
             },
             statusHUD: {
@@ -94,10 +100,11 @@ var gameApp = new Vue({
                     defence: 0,
                     critical: "0%",
                     dodge: 0,
-                    
+
                 }
             },
             statusDescriptionHUD: {
+
                 health: "Health",
                 mana: "Mana",
                 attack: "Attack",
@@ -109,9 +116,13 @@ var gameApp = new Vue({
 
             },
             abilities: {
+                heal: {
 
-                heal: 25,
-                healCost: 20
+                    percentRegen: 30,
+                    healthRegen: 0,
+                    healCost: 20,
+                    
+                },
 
             },
             enemyTarget: "hero"
@@ -119,6 +130,8 @@ var gameApp = new Vue({
         },
         activeTurn: "hero",
         battleLog: [],
+        rounds: [],
+        thisRound: 0,
         hasBattleLog: false,
 
     },
@@ -133,6 +146,7 @@ var gameApp = new Vue({
                 setTimeout(() => {
                     this.monsterAction()
                 }, 700)
+                this.thisRound++
 
             } else if (activeTurn == 'monster') {
                 setTimeout(() => {
@@ -140,6 +154,7 @@ var gameApp = new Vue({
                 }, 800)
 
             }
+            this.rounds.unshift(this.thisRound)
 
         },
 
@@ -152,33 +167,56 @@ var gameApp = new Vue({
             this[character].statusHUD.line1.mana = this[character].status.maxMana
             this[character].statusHUD.line1.attack = this[character].status.attack
             this[character].statusHUD.line1.speed = this[character].status.speed
+            
+            // Damage
             if (this[character].status.minDamage == this[character].status.maxDamage) {
                 this[character].statusHUD.line2.damage = this[character].status.minDamage
             } else {
                 this[character].statusHUD.line2.damage = this[character].status.minDamage + "-" + this[character].status.maxDamage
             }
-            if(this[character].status.critical > 100){
+            if (this[character].status.critical > 100) {
                 this[character].status.critical = 100
             }
             this[character].statusHUD.line2.critical = this[character].status.critical + "%"
             this[character].statusHUD.line2.defence = this[character].status.defence
-            
+
             // Damage Reduction
             defence = this[character].status.defence
             attack = this[enemyTarget].status.attack
-            
-            damageReduction = (defence / ((attack * 2) + defence)) * 100
-            this[character].statusDescriptionHUD.defence = "Defence (-" + Math.round(parseFloat(damageReduction.toFixed(2))) + "% Damage)"
+
+            if (defence >= 0) {
+                damageReduction = (defence / ((attack * 3) + defence)) * (100 * -1)
+
+            } else {
+                damageReduction = (2 - (100 / (100 - defence))) 
+                damageReduction = (damageReduction * 100) - 100
+
+            }
+            damageReduction = Math.round(parseFloat(damageReduction.toFixed(2)))
+            if (damageReduction < 0) {
+                this[character].statusDescriptionHUD.defence = "Defence (" + damageReduction + "% Damage)"
+            }
+            if (damageReduction >= 0) {
+                this[character].statusDescriptionHUD.defence = "Defence (+" + damageReduction + "% Damage)"
+            }
+            this[character].status.damageReduction = damageReduction
 
             // Dodge Chance
             speed = this[character].status.speed
             enemySpeed = this[enemyTarget].status.speed
-            
-            dodgeChance = (speed / ((enemySpeed * 6) + speed)) * 100
+
+            dodgeChance = (speed / ((enemySpeed * 9) + speed)) * 100
             dodgeChance = Math.round(parseFloat(dodgeChance.toFixed(2)))
 
             this[character].statusHUD.line2.dodge = dodgeChance + "%"
             this[character].status.dodge = dodgeChance
+
+            // Health Regen
+            maxHealth = this[character].status.maxHealth
+            percentRegen = this[character].abilities.heal.percentRegen
+            this[character].abilities.heal.healthRegen = Math.round(maxHealth * (percentRegen / 100))
+
+
 
         },
 
@@ -239,14 +277,14 @@ var gameApp = new Vue({
                 dodgeChance = this[enemyTarget].status.dodge
                 randomNum = Math.round(Math.random() * (100 - 1)) + 1
 
-                if(randomNum <= dodgeChance){
+                if (randomNum <= dodgeChance) {
                     this.battleLog.unshift({
                         character,
                         text: "The " + character + " missed the attack!"
                     })
-                    
+
                 } else {
-                    
+
                     // Damage
                     minDamage = this[character].status.minDamage
                     maxDamage = this[character].status.maxDamage
@@ -257,46 +295,42 @@ var gameApp = new Vue({
                     criticalChance = this[character].status.critical
                     criticalDamage = this[character].status.criticalDamage
                     randomNum = Math.round(Math.random() * (100 - 1)) + 1
-                    
+
                     console.log("Normal damage: " + damage)
                     if (randomNum <= criticalChance) {
                         critical = true
                         damage = Math.round(damage * (criticalDamage / 100))
                         console.log("Critical Hit! Damage deal " + damage)
-                        
+
                     }
-                    
+
                     // apply defence | Damage Reduction
-                    defence = this[enemyTarget].status.defence
-                    attack = this[character].status.attack
-                    
-                    damageReduction = (defence / ((attack * 2) + defence)) * 100
-                    damage = Math.round(damage * ( 1 - (damageReduction / 100)))
-                    
+                    damageReduction = this[enemyTarget].status.damageReduction
+                    damage = Math.round(damage * (1 - (-damageReduction / 100)))
                     console.log("Dano aplicando defesa:" + damage)
 
-                    
+
                     // apply damage
                     this[enemyTarget].status.health -= damage
                     $("#" + enemyTarget + " .health-bar").effect("shake", {
                         distance: 5
                     })
-                    
+
                     if (critical == true) {
                         this.battleLog.unshift({
                             character,
                             text: "CRITICAL HIT - The " + character + " deals " + damage + " DMG to the " + enemyTarget
                         })
-                        
+
                     } else {
                         this.battleLog.unshift({
                             character,
                             text: "The " + character + " deals " + damage + " DMG to the " + enemyTarget
                         })
                     }
-                    
+
                 }
-                if (this.battleLog.length > 0){
+                if (this.battleLog.length > 0) {
                     this.hasBattleLog = true
 
                 }
@@ -308,24 +342,24 @@ var gameApp = new Vue({
 
         heal: function (character, manaCost) {
             if (this.activeTurn == character && this[character].status.health > 0) {
-
-                healPercent = this[character].abilities.heal
-                manaCost = this[character].abilities.healCost
+                
+                healthRegen = this[character].abilities.heal.healthRegen
+                manaCost = this[character].abilities.heal.healCost
 
                 if (this[character].status.mana >= manaCost) {
 
                     this[character].status.mana -= manaCost
-                    heal = Math.round(this[character].status.maxHealth * (healPercent / 100))
-                    this[character].status.health += heal
+                    
+                    this[character].status.health += healthRegen
 
 
                     this.battleLog.unshift({
                         character,
-                        text: "The " + character + " heals itself by " + heal + " HP"
+                        text: "The " + character + " heals itself by " + healthRegen + " HP"
                     })
-                    if (this.battleLog.length > 0){
+                    if (this.battleLog.length > 0) {
                         this.hasBattleLog = true
-                        
+
                     }
 
                     this.nextTurn(character)
@@ -342,7 +376,7 @@ var gameApp = new Vue({
             maxEnemyDamage = this.hero.status.maxDamage
 
             mana = this.monster.status.mana
-            healCost = this.monster.abilities.healCost
+            healCost = this.monster.abilities.heal.healCost
 
             if (health <= maxEnemyDamage && mana >= healCost) {
                 maxDamage = this.monster.status.maxDamage
@@ -408,6 +442,18 @@ var gameApp = new Vue({
     },
 })
 
-$(function () {
+
+$(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip()
+
+    if ($(window).width() > 576) {
+
+        pageHeight = $(window).outerHeight()
+        marginY = 40
+        elementsHeight = $("#heroAction").outerHeight(true) + $("#charactersStatus").outerHeight(true) + $("#titleGame").outerHeight(true) + (marginY * 2)
+        $(".battle-info").css("max-height", pageHeight - elementsHeight)
+        $(".battle-info").css("margin", marginY + "px 0px")
+    }
+
 })
+

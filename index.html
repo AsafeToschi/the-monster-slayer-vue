@@ -6,13 +6,18 @@
     <title>The Monster Slayer</title>
     
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/jquery-ui.min.css"> <!-- Download just the Effects -->
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div id="app">
-        <div class="container">
-            <div class="row mt-5">
+
+        <div class="" v-show="map">
+            
+        </div>
+
+        <div class="container" v-show="battle">
+            <div class="row mt-5" id="titleGame">
                 <div class="col-md-12 text-center"> 
                     <h1 class="title-game">
                         The Monster Slayer
@@ -35,7 +40,7 @@
                     </div>
                 </div>
             </div> -->
-            <div class="row">
+            <div class="row" id="charactersStatus">
                 <div class="col-md-6">
                     
                     <div class="status mt-4" id="hero">
@@ -103,7 +108,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" id="heroAction">
                 <div class="col-md-12 pt-5">
                     <div class="btn-group d-flex justify-content-center action-buttons" role="group" aria-label="Basic example">
                         <button type="button" class="btn btn-danger" @click="attack('hero')">
@@ -114,8 +119,8 @@
                             <small class="d-block">Mana cost: 25</small>
                         </button>
                         <button type="button" class="btn btn-success" @click="heal('hero', 75)">
-                            Heal ({{ hero.status.maxHealth * ( hero.abilities.heal / 100) }} HP)
-                            <small class="d-block">Mana cost: {{ hero.abilities.healCost }}</small>
+                            Heal ({{ hero.abilities.heal.healthRegen }} HP)
+                            <small class="d-block">Mana cost: {{ hero.abilities.heal.healCost }}</small>
                         </button>
                         <button type="button" class="btn btn-white disabled">
                             Run!
@@ -124,11 +129,16 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-12 mt-5">
-                    <ul class="battle-info" v-show="hasBattleLog">
-                        <template v-for="log in battleLog">
-                            <li class="text-center" :class="[{'hero-log': log.character == 'hero'}, {'monster-log': log.character == 'monster'}]"> {{ log.text }} </li>
+            <div class="row" v-show="hasBattleLog">
+                <div class="col-md-12">
+                    <ul class="battle-info">
+                        <template v-for="(log, i) in battleLog">
+                            <li class="text-center" :class="[{'hero-log': log.character == 'hero'}, {'monster-log': log.character == 'monster'}]">
+                                <span class="rounds">
+                                    Round {{ rounds[i] }}
+                                </span>
+                                {{ log.text }}
+                            </li>
                         </template>
                     </ul>
                 </div>

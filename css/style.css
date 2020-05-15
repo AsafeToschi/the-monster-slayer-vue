@@ -7,6 +7,7 @@ html body {
   width: 100%;
 }
 html body #app {
+  background: transparent;
   color: #444;
   height: 100%;
   width: 100%;
@@ -32,7 +33,7 @@ html body #app .turns ul li {
 }
 html body #app .status {
   background-color: #f8f8f8;
-  padding: 10px;
+  padding: 10px 15px;
   border: 1px solid #dddddd;
 }
 html body #app .status .name-character h3 {
@@ -128,23 +129,48 @@ html body #app .battle-info {
   box-shadow: 1px 2px 6px #00000022, 0px 0px 6px #00000022;
   padding: 15px;
   list-style: none;
+  overflow: auto;
 }
 html body #app .battle-info li {
   padding: 5px;
   margin: 5px 0px;
+  position: relative;
 }
 html body #app .battle-info li.hero-log {
-  background: rgba(105, 187, 57, 0.2);
+  background: #dcf1cf;
   color: #167315;
   font-weight: 500;
 }
+html body #app .battle-info li.hero-log .rounds:before {
+  content: "";
+  background: rgba(22, 115, 21, 0.2);
+  width: 2px;
+  height: 70%;
+  right: 0px;
+  position: absolute;
+}
 html body #app .battle-info li.monster-log {
-  background: rgba(228, 56, 64, 0.2);
+  background: #fcecec;
   color: #8a1117;
   font-weight: 500;
 }
-html body #app .battle-info li:last-child {
-  border-bottom: none;
+html body #app .battle-info li.monster-log .rounds:before {
+  content: "";
+  background: rgba(138, 17, 23, 0.2);
+  width: 2px;
+  height: 70%;
+  right: 0px;
+  position: absolute;
+}
+html body #app .battle-info li .rounds {
+  position: absolute;
+  left: 0px;
+  width: 100px;
+  height: 100%;
+  top: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @media (max-width: 576px) {
