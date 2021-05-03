@@ -118,11 +118,16 @@ html body #app .status .status-HUD .list-status .item-status img {
   margin-right: 5px;
   height: 22px;
 }
-html body #app .action-buttons button.disabled {
+html body #app .action-buttons button.disabled, html body #app .action-buttons a.disabled {
   cursor: not-allowed;
 }
-html body #app .action-buttons button small {
+html body #app .action-buttons button small, html body #app .action-buttons a small {
   font-size: 11px;
+}
+html body #app .action-buttons button.btn-gray, html body #app .action-buttons a.btn-gray {
+  background: #f2f2f2;
+  color: #666;
+  font-weight: bold;
 }
 html body #app .battle-info {
   background: #fafafa;

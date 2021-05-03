@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Monster Slayer</title>
+    <title>The Monster Slayer - Menu</title>
     
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/jquery-ui.min.css">
@@ -11,10 +11,6 @@
 </head>
 <body>
     <div id="app">
-
-        <div class="" v-show="map">
-            
-        </div>
 
         <div class="container" v-show="battle">
             <div class="row mt-5" id="titleGame">
@@ -24,159 +20,29 @@
                     </h1>
                 </div>
             </div>
-            <!-- <div class="row">
-                <div class="col-md-12">
-                    <div class="turns">
-                        <ul>
-                            <template v-for="n in 15">
-                                <li>
-                                    <span class="badge badge-primary">Hero</span>
-                                </li>
-                                <li>
-                                    <span class="badge badge-danger">Monster</span>
-                                </li>
-                            </template>
-                        </ul>
-                    </div>
-                </div>
-            </div> -->
+
+            <a href="fight.html" class="btn btn-primary">Go To Fight</a>
             <div class="row" id="charactersStatus">
-                <div class="col-md-6">
-                    
-                    <div class="status mt-4" id="hero">
-                        <div class="name-character text-center">
-                            <h3>Hero Lvl. {{ hero.status.level }}</h3>
-                        </div>
-                        <div class="health-bar">
-                            <div class="health" :style="healthBar('hero')"></div>
-                            <span> {{ hero.status.health }} / {{ hero.status.maxHealth }} </span>
-                        </div>
-
-                        <div class="mana-bar">
-                            <div class="mana" :style="manaBar('hero')"></div>
-                            <span> {{ hero.status.mana }} / {{ hero.status.maxMana }} </span>
-                        </div>
-                        <div class="status-HUD" v-model="setStatusHUD('hero')">
-                            <ul class="list-status">
-                                <template v-for="(statusInfo, statusName) in hero.statusHUD.line1">
-                                    <li class="item-status" data-toggle="tooltip" data-placement="bottom" v-bind:title="hero.statusDescriptionHUD[statusName]">
-                                        <img :src="'images/icons/' + statusName + '.svg'"> {{ statusInfo }}
-                                    </li>
-                                </template>
-                            </ul>
-                            <ul class="list-status">
-                                <template v-for="(statusInfo, statusName) in hero.statusHUD.line2">
-                                    <li class="item-status" data-toggle="tooltip" data-placement="bottom" v-bind:title="hero.statusDescriptionHUD[statusName]">
-                                        <img :src="'images/icons/' + statusName + '.svg'"> {{ statusInfo }}
-                                    </li>
-                                </template>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="status mt-4" id="monster">
-                        <div class="name-character text-center">
-                            <h3>Monster Lvl. {{ monster.status.level }}</h3>
-                        </div>
-
-                        <div class="health-bar">
-                            <div class="health" :style="healthBar('monster')"></div>
-                            <span> {{ monster.status.health }} / {{ monster.status.maxHealth }} </span>
-                        </div>
-
-                        <div class="mana-bar">
-                            <div class="mana" :style="manaBar('monster')"></div>
-                            <span> {{ monster.status.mana }} / {{ monster.status.maxMana }} </span>
-                        </div>
-                        <div class="status-HUD" v-model="setStatusHUD('monster')">
-                            <ul class="list-status">
-                                <template v-for="(statusInfo, statusName) in monster.statusHUD.line1">
-                                    <li class="item-status" data-toggle="tooltip" data-placement="bottom" v-bind:title="monster.statusDescriptionHUD[statusName]">
-                                        <img :src="'images/icons/' + statusName + '.svg'"> {{ statusInfo }}
-                                    </li>
-                                </template>
-                            </ul>
-                            <ul class="list-status">
-                                <template v-for="(statusInfo, statusName) in monster.statusHUD.line2">
-                                    <li class="item-status" data-toggle="tooltip" data-placement="bottom" v-bind:title="monster.statusDescriptionHUD[statusName]">
-                                        <img :src="'images/icons/' + statusName + '.svg'"> {{ statusInfo }}
-                                    </li>
-                                </template>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                
+                
             </div>
             <div class="row" id="heroAction">
                 <div class="col-md-12 pt-5">
-                    <div class="btn-group d-flex justify-content-center action-buttons" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-danger" @click="attack('hero')">
-                            Attack
-                        </button>
-                        <button type="button" class="btn btn-warning disabled" @click="">
-                            Special Attack
-                            <small class="d-block">Mana cost: 25</small>
-                        </button>
-                        <button type="button" class="btn btn-success" @click="heal('hero', 75)">
-                            Heal ({{ hero.abilities.heal.healthRegen }} HP)
-                            <small class="d-block">Mana cost: {{ hero.abilities.heal.healCost }}</small>
-                        </button>
-                        <button type="button" class="btn btn-white disabled">
-                            Run!
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row" v-show="hasBattleLog">
-                <div class="col-md-12">
-                    <ul class="battle-info">
-                        <template v-for="(log, i) in battleLog">
-                            <li class="text-center" :class="[{'hero-log': log.character == 'hero'}, {'monster-log': log.character == 'monster'}]">
-                                <span class="rounds">
-                                    Round {{ rounds[i] }}
-                                </span>
-                                {{ log.text }}
-                            </li>
-                        </template>
-                    </ul>
+                    
                 </div>
             </div>
             
-            <!-- WIN -->
-            <div class="modal fade" id="win" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content bg-white">                        
-                        <h1 class="text-success text-center p-5">
-                            You win!
-                        </h1>
-                        <button type="button" class="btn btn-primary mx-auto mb-5" data-dismiss="modal" @click="restartGame">Restart Game</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- LOSE -->
-            <div class="modal fade" id="lose" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content bg-white">                        
-                        <h1 class="text-danger text-center p-5">
-                            You lose!
-                        </h1>
-                        <button type="button" class="btn btn-primary mx-auto mb-5" data-dismiss="modal" @click="restartGame">Restart Game</button>
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </div>
 
 
 
-    <script src="js/jquery.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery-ui.min.js"></script>
-    <script src="js/vue.min.js"></script>
+    <script src="js/libs/jquery.js"></script>
+    <script src="js/libs/popper.min.js"></script>
+    <script src="js/libs/bootstrap.min.js"></script>
+    <script src="js/libs/jquery-ui.min.js"></script>
+    <script src="js/libs/vue.min.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

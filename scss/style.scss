@@ -1,71 +1,73 @@
-html{
+@import "menu.scss";
+@import "fight.scss";
+
+html {
     height: 100%;
     width: 100%;
-    body{
+    body {
         height: 100%;
         width: 100%;
         // background-image: linear-gradient(45deg, #2d84d0,#30cff3);
-        #app{
+        #app {
             background: transparent; // temporario
             color: #444;
             height: 100%;
             width: 100%;
             display: flex;
             position: relative;
-            .turns{
+            .turns {
                 padding: 10px;
                 background: #f2f2f2;
                 overflow: hidden;
                 display: flex;
-                ul{
-                    
+                ul {
                     list-style-type: none;
                     overflow: hidden;
                     display: flex;
                     margin: 0px;
                     padding: 0px;
-                    li{
+                    li {
                         padding: 0 7.5px;
                         display: inline;
                     }
                 }
             }
-            .status{
+            .status {
                 background-color: #f8f8f8;
                 padding: 10px 15px;
                 border: 1px solid #dddddd;
-                .name-character{
-                    h3{
+                .name-character {
+                    h3 {
                         font-size: 20px;
                         font-weight: 700;
                         color: #666;
                     }
                 }
-                &#hero{
-                    .health-bar{
+                &#hero {
+                    .health-bar {
                         background: rgba(#69bb39, 0.3);
-                        border: 2px solid rgba( #69bb39, 0.4);
-                        .health{
+                        border: 2px solid rgba(#69bb39, 0.4);
+                        .health {
                             background: #69bb39;
                         }
-                        span{
+                        span {
                             color: #167315;
                         }
                     }
                 }
-                .health-bar{
+                .health-bar {
                     position: relative;
                     width: 100%;
                     height: 30px;
-                    background: rgba( #e43840, 0.3);
-                    border: 2px solid rgba( #e43840, 0.4);
-                    .health{
+                    background: rgba(#e43840, 0.3);
+                    border: 2px solid rgba(#e43840, 0.4);
+                    .health {
                         height: 100%;
                         background: #e43840;
                         font-weight: 500;
                         transition: 0.3s ease;
                     }
-                    span{
+                    span {
                         position: absolute;
                         display: block;
                         color: #8a1117;
@@ -76,20 +78,20 @@ html{
                         transform: translate(-50%, -50%);
                     }
                 }
-                .mana-bar{
+                .mana-bar {
                     position: relative;
                     width: 100%;
                     height: 20px;
-                    background: rgba( #479af3, 0.3);
-                    border: 2px solid rgba( #479af3, 0.4);
+                    background: rgba(#479af3, 0.3);
+                    border: 2px solid rgba(#479af3, 0.4);
                     margin-top: 5px;
-                    .mana{
+                    .mana {
                         height: 100%;
                         background: #479af3;
                         font-weight: 500;
                         transition: 0.3s ease;
                     }
-                    span{
+                    span {
                         position: absolute;
                         display: block;
                         color: #064b96;
@@ -100,15 +102,14 @@ html{
                         transform: translate(-50%, -50%);
                     }
                 }
-                .status-HUD{
-                    
-                    .list-status{
+                .status-HUD {
+                    .list-status {
                         padding: 10px;
                         list-style-type: none;
                         margin: 0px;
                         display: flex;
                         justify-content: space-around;
-                        .item-status{
+                        .item-status {
                             font-weight: 700;
                             font-size: 18px;
                             color: #666;
@@ -116,7 +117,7 @@ html{
                             align-items: center;
                             cursor: context-menu;
                             user-select: none;
-                            img{
+                            img {
                                 margin-right: 5px;
                                 height: 22px;
                             }
@@ -124,31 +125,36 @@ html{
                     }
                 }
             }
-            .action-buttons{
-                button{
-                    &.disabled{
+            .action-buttons {
+                button, a {
+                    &.disabled {
                         cursor: not-allowed;
                     }
-                    small{
+                    small {
                         font-size: 11px;
+                    }
+                    &.btn-gray {
+                        background: #f2f2f2;
+                        color: #666;
+                        font-weight: bold;
                     }
                 }
             }
-            .battle-info{
+            .battle-info {
                 background: #fafafa;
                 box-shadow: 1px 2px 6px #00000022, 0px 0px 6px #00000022;
                 padding: 15px;
                 list-style: none;
                 overflow: auto;
-                li{
+                li {
                     padding: 5px;
                     margin: 5px 0px;
                     position: relative;
-                    &.hero-log{
+                    &.hero-log {
                         background: lighten(#69bb39, 40);
                         color: #167315;
                         font-weight: 500;
-                        .rounds:before{
+                        .rounds:before {
                             content: "";
                             background: rgba(#167315, 0.2);
                             width: 2px;
@@ -157,11 +163,11 @@ html{
                             position: absolute;
                         }
                     }
-                    &.monster-log{
+                    &.monster-log {
                         background: lighten(#e43840, 40);
                         color: #8a1117;
                         font-weight: 500;
-                        .rounds:before{
+                        .rounds:before {
                             content: "";
                             background: rgba(#8a1117, 0.2);
                             width: 2px;
@@ -170,7 +176,7 @@ html{
                             position: absolute;
                         }
                     }
-                    .rounds{
+                    .rounds {
                         position: absolute;
                         left: 0px;
                         width: 100px;
@@ -185,11 +191,11 @@ html{
         }
     }
 }
-@media (max-width: 576px){
-    .title-game{
+@media (max-width: 576px) {
+    .title-game {
         font-size: 30px;
     }
-    .name-character h3{
+    .name-character h3 {
         font-size: 20px;
     }
 }
